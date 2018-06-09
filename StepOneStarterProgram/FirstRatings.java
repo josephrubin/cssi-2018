@@ -72,7 +72,7 @@ public class FirstRatings
     
     public static void testLoadMovies()
     {
-        ArrayList<Movie> movies = loadMovies("ratedmovies_short.csv");
+        ArrayList<Movie> movies = loadMovies("ratedmoviesfull.csv");
         
         System.out.println("Number of Movies loaded: " + movies.size());
         //System.out.println("\n" + movies);
@@ -122,18 +122,111 @@ public class FirstRatings
             }
         }
         System.out.println("By director: " + moviesByDirector);
+        ArrayList<Integer> directeds = new ArrayList<>(moviesByDirector.values());
+        directeds.sort(null);
+        System.out.println("Sorted: " + directeds);
+        int maxD = directeds.get(directeds.size() - 1);
+        System.out.println("Max directed: " + maxD + " movies, by director: ");
+        for (Map.Entry<String, Integer> entry : moviesByDirector.entrySet())
+        {
+            if (entry.getValue() == maxD)
+            {
+                System.out.println(entry.getKey());
+            }
+        }
     }
     
     public static void testLoadRaters()
     {
-        ArrayList<Rater> raters = loadRaters("ratings_short.csv");
-        
+        ArrayList<Rater> raters = loadRaters("ratings.csv");
+        System.out.println("=========");
         System.out.println("Number of distinct Raters: " + raters.size());
         
+        /*
         for (Rater rater : raters)
         {
             System.out.println(rater.getID() + " " + rater.numRatings());
-            System.out.println(rater.getItemsRated() + "\n");
+            StringBuilder pairs = new StringBuilder();
+            for (String id : rater.getItemsRated())
+            {
+                pairs.append(id);
+                pairs.append(" ");
+                pairs.append(rater.getRating(id));
+                pairs.append(" | ");
+            }
+            pairs.append("\n");
+            System.out.println(pairs);
         }
+        */
+       
+        
+        String givenId = "193";
+        System.out.println("Rater " + givenId + " has " + numRatings(raters, givenId) + " ratings.");
+        
+        // Find Raters with most ratings.
+        Map<String, Integer> rates = new HashMap<>();
+        for (Rater rater : raters)
+        {
+            rates.put(rater.getID(), rater.numRatings());
+        }
+        ArrayList<Integer> numRatings = new ArrayList<>(rates.values());
+        numRatings.sort(null);
+        
+        if (numRatings.size() > 0)
+        {
+            int maxRatings = numRatings.get(numRatings.size() - 1);
+            System.out.println("The maximum number of ratings by any Rater is " + maxRatings);
+            System.out.println("The following people are those max Raters:");
+            
+            for (Rater rater : raters)
+            {
+                if (rater.numRatings() >= maxRatings)
+                {
+                    System.out.println(rater.getID());
+                }
+            }
+        }
+        
+        System.out.println("----------------------~~---------------------");
+        
+        Map<String, Integer> moviesByRatings = moviesByRatings(raters);
+        String movieId = "1798709";
+        System.out.println("Movie " + movieId + " was rated by " + moviesByRatings.get(movieId) + " raters.");
+        System.out.println("In total, there are " + moviesByRatings.size() + " movies rated");
     }
+    
+    // Given an id, find the number of ratings, or -1 if that rater does not exist.
+    private static int numRatings(Collection<Rater> raters, String givenId)
+    {
+        for (Rater rater : raters)
+        {
+            if (rater.getID().equals(givenId))
+            {
+                return rater.numRatings();
+            }
+        }
+        return -1;
+    }
+    
+    // Movies by number of ratings.
+    private static Map<String, Integer> moviesByRatings(Collection<Rater> raters)
+    {
+        Map<String, Integer> moviesByRatings = new HashMap<>();
+        for (Rater rater : raters)
+        {
+            for (String movieId : rater.getItemsRated())
+            {
+                if (!moviesByRatings.containsKey(movieId))
+                {
+                    moviesByRatings.put(movieId, 1);
+                }
+                else
+                {
+                    moviesByRatings.put(movieId, moviesByRatings.get(movieId) + 1);
+                }
+            }
+        }
+        return moviesByRatings;
+    }
+    
 }
