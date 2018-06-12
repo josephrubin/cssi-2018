@@ -11,8 +11,7 @@ public class Rating implements Comparable<Rating>
     }
 
     // Returns item being rated
-    public String getItem
-    ()
+    public String getItem()
     {
         return item;
     }
