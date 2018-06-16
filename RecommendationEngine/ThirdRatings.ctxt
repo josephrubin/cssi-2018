@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=ThirdRatings
+comment1.params=test
+comment1.target=ThirdRatings(boolean)
+comment2.params=
+comment2.target=int\ getRaterSize()
+comment3.params=minimumRaters
+comment3.target=java.util.ArrayList\ getAverageRatings(int)
+comment4.params=minimumRaters\ filter
+comment4.target=java.util.ArrayList\ getAverageRatingsByFilter(int,\ Filter)
+comment5.params=id\ minimumRaters
+comment5.target=double\ getAverageById(java.lang.String,\ int)
+numComments=6

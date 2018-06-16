@@ -15,7 +15,7 @@ public class FirstRatings
         ArrayList<Movie> movies = new ArrayList<>();
         
         // Load the file...
-        FileResource file = new FileResource("data/" + fileName);
+        FileResource file = new FileResource(fileName);
         // ...and create a CSVParser from it.
         CSVParser parser = file.getCSVParser();
         
@@ -60,7 +60,7 @@ public class FirstRatings
             // Make a new Rater if we did not already.
             if (!raters.containsKey(raterId))
             {
-                Rater rater = new Rater(raterId);
+                Rater rater = new EfficientRater(raterId);
                 raters.put(raterId, rater);
             }
             

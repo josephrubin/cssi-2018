@@ -12,10 +12,17 @@ public class MovieDatabase {
         }
     }
 
-    private static void initialize() {
-        if (ourMovies == null) {
-            ourMovies = new HashMap<String,Movie>();
-            loadMovies("data/ratedmoviesfull.csv");
+    public static void initialize(boolean test) {
+        if (ourMovies == null)
+        {
+            if (test)
+            {
+                MovieDatabase.initialize("movies_test.csv");
+            }
+            else
+            {
+                MovieDatabase.initialize("movies.csv");
+            }
         }
     }	
 
@@ -28,48 +35,39 @@ public class MovieDatabase {
         }
     }
 
-    public static boolean containsID(String id) {
-        initialize();
+    public static boolean containsId(String id) {
         return ourMovies.containsKey(id);
     }
 
     public static int getYear(String id) {
-        initialize();
         return ourMovies.get(id).getYear();
     }
 
     public static String getGenres(String id) {
-        initialize();
         return ourMovies.get(id).getGenres();
     }
 
     public static String getTitle(String id) {
-        initialize();
         return ourMovies.get(id).getTitle();
     }
 
     public static Movie getMovie(String id) {
-        initialize();
         return ourMovies.get(id);
     }
 
     public static String getPoster(String id) {
-        initialize();
         return ourMovies.get(id).getPoster();
     }
 
     public static int getMinutes(String id) {
-        initialize();
         return ourMovies.get(id).getMinutes();
     }
 
     public static String getCountry(String id) {
-        initialize();
         return ourMovies.get(id).getCountry();
     }
 
     public static String getDirector(String id) {
-        initialize();
         return ourMovies.get(id).getDirector();
     }
 
@@ -78,7 +76,6 @@ public class MovieDatabase {
     }
 
     public static ArrayList<String> filterBy(Filter f) {
-        initialize();
         ArrayList<String> list = new ArrayList<String>();
         for(String id : ourMovies.keySet()) {
             if (f.satisfies(id)) {
