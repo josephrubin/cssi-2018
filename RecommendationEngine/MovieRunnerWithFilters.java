@@ -13,14 +13,14 @@ public class MovieRunnerWithFilters
     public void printAverageRatings(int minimumRaters)
     {
         MovieDatabase.initialize(TEST);
-        ThirdRatings secondRatings = new ThirdRatings(TEST);
+        ThirdRatings thirdRatings = new ThirdRatings(TEST);
         
         System.out.println("======================================");
         
-        System.out.println("Number of raters: " + secondRatings.getRaterSize());
+        System.out.println("Number of raters: " + thirdRatings.getRaterSize());
         
         System.out.println("__________________");
-        ArrayList<Rating> avgRatings = secondRatings.getAverageRatings(minimumRaters);
+        ArrayList<Rating> avgRatings = thirdRatings.getAverageRatings(minimumRaters);
         avgRatings.sort(new RatingComparator());
         System.out.println("Found this many movies: " + avgRatings.size());
         for (Rating rating : avgRatings)

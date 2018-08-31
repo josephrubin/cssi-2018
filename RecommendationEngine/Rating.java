@@ -4,7 +4,7 @@ public class Rating implements Comparable<Rating>
     private String item;
     private double value;
 
-    public Rating (String anItem, double aValue)
+    public Rating(String anItem, double aValue)
     {
         item = anItem;
         value = aValue;
