@@ -16,7 +16,7 @@ public class MovieRunnerSimilarRatings
         RaterDatabase.initialize(TEST);
         FourthRatings fourthRatings = new FourthRatings(TEST);
         
-        ArrayList<Rating> similarRatings = getSimilarRatings("65", 20, 5);
+        ArrayList<Rating> similarRatings = getSimilarRatings("71", 20, 5);
         for (Rating rating : similarRatings)
         {
             System.out.println(MovieDatabase.getMovie(rating.getItem()).getTitle() + " " + rating.getValue());
@@ -29,8 +29,8 @@ public class MovieRunnerSimilarRatings
         RaterDatabase.initialize(TEST);
         FourthRatings fourthRatings = new FourthRatings(TEST);
         
-        ArrayList<Rating> similarRatings = getSimilarRatingsByFilter("65", 20, 5,
-            new GenreFilter("Action"));
+        ArrayList<Rating> similarRatings = getSimilarRatingsByFilter("964", 20, 5,
+            new GenreFilter("Mystery"));
         for (Rating rating : similarRatings)
         {
             System.out.println(MovieDatabase.getMovie(rating.getItem()).getTitle() + " " + rating.getValue()
@@ -44,8 +44,8 @@ public class MovieRunnerSimilarRatings
         RaterDatabase.initialize(TEST);
         FourthRatings fourthRatings = new FourthRatings(TEST);
         
-        ArrayList<Rating> similarRatings = getSimilarRatingsByFilter("1034", 10, 3,
-            new DirectorsFilter("Clint Eastwood,Sydney Pollack,David Cronenberg,Oliver Stone"));
+        ArrayList<Rating> similarRatings = getSimilarRatingsByFilter("120", 10, 2,
+            new DirectorsFilter("Clint Eastwood,J.J. Abrams,Alfred Hitchcock,Sydney Pollack,David Cronenberg,Oliver Stone,Mike Leigh"));
         for (Rating rating : similarRatings)
         {
             System.out.println(MovieDatabase.getMovie(rating.getItem()).getTitle() + " " + rating.getValue()
@@ -60,10 +60,10 @@ public class MovieRunnerSimilarRatings
         FourthRatings fourthRatings = new FourthRatings(TEST);
         
         AllFilters f = new AllFilters();
-        f.addFilter(new GenreFilter("Adventure"));
-        f.addFilter(new MinutesFilter(100, 200));
+        f.addFilter(new GenreFilter("Drama"));
+        f.addFilter(new MinutesFilter(80, 160));
         
-        ArrayList<Rating> similarRatings = getSimilarRatingsByFilter("65", 10, 5,
+        ArrayList<Rating> similarRatings = getSimilarRatingsByFilter("168", 10, 3,
             f);
         for (Rating rating : similarRatings)
         {
@@ -79,10 +79,10 @@ public class MovieRunnerSimilarRatings
         FourthRatings fourthRatings = new FourthRatings(TEST);
         
         AllFilters f = new AllFilters();
-        f.addFilter(new YearAfterFilter(2000));
-        f.addFilter(new MinutesFilter(80, 100));
+        f.addFilter(new YearAfterFilter(1975));
+        f.addFilter(new MinutesFilter(70, 200));
         
-        ArrayList<Rating> similarRatings = getSimilarRatingsByFilter("65", 10, 5,
+        ArrayList<Rating> similarRatings = getSimilarRatingsByFilter("314", 10, 5,
             f);
         for (Rating rating : similarRatings)
         {
