@@ -54,9 +54,12 @@ public class EfficientRater implements Rater
 
     public ArrayList<String> getItemsRated()
     {
+        assert myRatings != null;
         ArrayList<String> list = new ArrayList<String>();
-        for(int k=0; k < myRatings.size(); k++){
-            list.add(myRatings.get(k).getItem());
+        for (Map.Entry<String, Rating> entry : myRatings.entrySet()){
+            list.add(entry
+                .getValue()
+                .getItem());
         }
         
         return list;

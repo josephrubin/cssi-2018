@@ -5,10 +5,24 @@ import org.apache.commons.csv.*;
 public class RaterDatabase
 {
     private static HashMap<String,Rater> ourRaters;
+    
+    public static void initialize(boolean test) {
+        if (ourRaters == null)
+        {
+            if (test)
+            {
+                RaterDatabase.initialize("ratings_test.csv");
+            }
+            else
+            {
+                RaterDatabase.initialize("ratings.csv");
+            }
+        }
+    }	
      
     private static void initialize()
     {
-        // this method is only called from addRatings 
+        // this method is only called from addRatings.
         if (ourRaters == null)
         {
             ourRaters = new HashMap<String,Rater>();

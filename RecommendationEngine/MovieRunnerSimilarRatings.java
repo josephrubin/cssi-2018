@@ -8,24 +8,85 @@ import java.util.*;
  */
 public class MovieRunnerSimilarRatings
 {
-    private final boolean TEST = true;
+    private final boolean TEST = false;
     
-    public void printAverageRatings(int minimumRaters)
+    public void printSimilarRatings()
     {
         MovieDatabase.initialize(TEST);
+        RaterDatabase.initialize(TEST);
         FourthRatings fourthRatings = new FourthRatings(TEST);
         
-        System.out.println("======================================");
-        
-        System.out.println("Number of raters: " + RaterDatabase.size());
-        
-        System.out.println("__________________");
-        ArrayList<Rating> avgRatings = fourthRatings.getAverageRatings(minimumRaters);
-        avgRatings.sort(new RatingComparator());
-        System.out.println("Found this many movies: " + avgRatings.size());
-        for (Rating rating : avgRatings)
+        ArrayList<Rating> similarRatings = getSimilarRatings("65", 20, 5);
+        for (Rating rating : similarRatings)
         {
-            System.out.println(rating.getValue() + "\t" + MovieDatabase.getTitle(rating.getItem()));
+            System.out.println(MovieDatabase.getMovie(rating.getItem()).getTitle() + " " + rating.getValue());
+        }
+    }
+    
+    public void printSimilarRatingsByGenre()
+    {
+        MovieDatabase.initialize(TEST);
+        RaterDatabase.initialize(TEST);
+        FourthRatings fourthRatings = new FourthRatings(TEST);
+        
+        ArrayList<Rating> similarRatings = getSimilarRatingsByFilter("65", 20, 5,
+            new GenreFilter("Action"));
+        for (Rating rating : similarRatings)
+        {
+            System.out.println(MovieDatabase.getMovie(rating.getItem()).getTitle() + " " + rating.getValue()
+            + "\n" + MovieDatabase.getMovie(rating.getItem()).getGenres() + "\n");
+        }
+    }
+    
+    public void printSimilarRatingsByDirector()
+    {
+        MovieDatabase.initialize(TEST);
+        RaterDatabase.initialize(TEST);
+        FourthRatings fourthRatings = new FourthRatings(TEST);
+        
+        ArrayList<Rating> similarRatings = getSimilarRatingsByFilter("1034", 10, 3,
+            new DirectorsFilter("Clint Eastwood,Sydney Pollack,David Cronenberg,Oliver Stone"));
+        for (Rating rating : similarRatings)
+        {
+            System.out.println(MovieDatabase.getMovie(rating.getItem()).getTitle() + " " + rating.getValue()
+            + "\n" + MovieDatabase.getMovie(rating.getItem()).getDirector() + "\n");
+        }
+    }
+    
+    public void printSimilarRatingsByGenreAndMinutes()
+    {
+        MovieDatabase.initialize(TEST);
+        RaterDatabase.initialize(TEST);
+        FourthRatings fourthRatings = new FourthRatings(TEST);
+        
+        AllFilters f = new AllFilters();
+        f.addFilter(new GenreFilter("Adventure"));
+        f.addFilter(new MinutesFilter(100, 200));
+        
+        ArrayList<Rating> similarRatings = getSimilarRatingsByFilter("65", 10, 5,
+            f);
+        for (Rating rating : similarRatings)
+        {
+            System.out.println(MovieDatabase.getMovie(rating.getItem()).getTitle() + " " + MovieDatabase.getMovie(rating.getItem()).getMinutes() + " " + rating.getValue()
+            + "\n" + MovieDatabase.getMovie(rating.getItem()).getGenres() + "\n");
+        }
+    }
+    
+    public void printSimilarRatingsByYearAndMinutes()
+    {
+        MovieDatabase.initialize(TEST);
+        RaterDatabase.initialize(TEST);
+        FourthRatings fourthRatings = new FourthRatings(TEST);
+        
+        AllFilters f = new AllFilters();
+        f.addFilter(new YearAfterFilter(2000));
+        f.addFilter(new MinutesFilter(80, 100));
+        
+        ArrayList<Rating> similarRatings = getSimilarRatingsByFilter("65", 10, 5,
+            f);
+        for (Rating rating : similarRatings)
+        {
+            System.out.println(MovieDatabase.getMovie(rating.getItem()).getTitle() + " " + MovieDatabase.getMovie(rating.getItem()).getYear() + " " + MovieDatabase.getMovie(rating.getItem()).getMinutes() + " " + rating.getValue() + "\n");
         }
     }
     
@@ -49,6 +110,7 @@ public class MovieRunnerSimilarRatings
     {
         ArrayList<Rating> similarRatings = new ArrayList<>();
         Rater me = RaterDatabase.getRater(id);
+        assert me != null;
         
         for (Rater r : RaterDatabase.getRaters())
         {
@@ -75,8 +137,9 @@ public class MovieRunnerSimilarRatings
         ArrayList<Rating> similarRatings = new ArrayList<>();
         
         ArrayList<Rating> similars = getSimilarities(id);
+        //System.out.println(similars);
         
-        for (String movieName : MovieDatabase.filterBy(new TrueFilter()))
+        for (String movieName : MovieDatabase.filterBy(filterCriteria))
         {
             double movieScore = 0;
             int numRaters = 0;
@@ -95,7 +158,7 @@ public class MovieRunnerSimilarRatings
             
             movieScore /= numRaters;
 
-            if (numRaters >= numSimilarRaters)
+            if (numRaters >= minimumRaters)
             {
                 similarRatings.add(new Rating(movieName, movieScore));
             }
