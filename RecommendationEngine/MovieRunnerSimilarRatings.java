@@ -144,7 +144,7 @@ public class MovieRunnerSimilarRatings
             double movieScore = 0;
             int numRaters = 0;
             
-            for (int i = 0; i < numSimilarRaters; i++)
+            for (int i = 0; i < numSimilarRaters && i < similars.size(); i++)
             {
                 String similarId = similars.get(i).getItem();
                 double similarWeight = similars.get(i).getValue();
